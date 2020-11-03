@@ -1,11 +1,7 @@
 import React from 'react'
-import Spinner from '../layouts/Spinner'
 import UserItem from './UserItem'
 
 const users = ({users, loading}) => {
-
-    if (loading)
-        return <Spinner/>        
 
     return (
         <div style={userStyle}>

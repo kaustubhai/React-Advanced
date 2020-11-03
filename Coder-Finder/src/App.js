@@ -14,8 +14,6 @@ export class App extends Component {
 
   state = {
     users: [],
-    user: {},
-    loading: false,
     alert: null
   }
 
@@ -41,10 +39,16 @@ export class App extends Component {
 
   getUser = async (username) => {
     this.setState({ loading: true})
-    const response = await axios.get(`https://api.github.com/search/users?q=${username}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
-    this.setState({ user: response.data.items })
-    console.log(this.state.user)
-    return response.data.items
+    const response = await axios.get(`https://api.github.com/users/${username}`)
+    this.setState({ user: response.data })
+    return response.data
+  }
+
+  getRepos = async (username) => {
+    this.setState({ loading: true})
+    const response = await axios.get(`https://api.github.com/users/${username}/repos?sort=created&per_page=5`)
+    this.setState({ repos: response.data })
+    return response.data
   }
 
   render() {
@@ -58,14 +62,14 @@ export class App extends Component {
               <Route exact path="/">
                 <Fragment>
                   <Search searchUsers={this.searchUsers} alertUser={this.alertUser} />
-                  <Users loading={this.state.loading} users={this.state.users} />
+                  <Users users={this.state.users} />
                 </Fragment>
               </Route>
               <Route exact path='/about'>
                 <About/>
               </Route>
               <Route exact path='/user/:login' render={
-                props => <User {...props} loading={this.state.loading} getUser={this.getUser} user={this.state.user}/>
+                props => <User {...props} getRepos={this.getRepos} getUser={this.getUser}/>
               }>
               </Route>
             </Switch>
