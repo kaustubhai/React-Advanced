@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component, Fragment, useState, useEffect } from 'react'
 import './App.css'
 import Navbar from './components/layouts/Navbar'
 import Users from './components/users/Users'
@@ -10,74 +10,68 @@ import Alert from './components/layouts/Alert'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 
-export class App extends Component {
+const App = () => {
 
-  state = {
-    users: [],
-    alert: null
-  }
+  const [users, setUsers] = useState([])  
+  const [user, setUser] = useState({})  
+  const [repos, setRepos] = useState([])
+  const [alert, setAlert] = useState(null)
 
-  async componentDidMount() {
-    this.setState({ loading: true})
+  useEffect( async () => {
     const response = await axios.get(`https://api.github.com/users?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
-    this.setState({loading: false, users: response.data})
-  }
+    setUsers(response.data)
+  }, [])
 
-  searchUsers = async (user) => {
-    this.setState({ loading: true})
+  const searchUsers = async (user) => {
     const response = await axios.get(`https://api.github.com/search/users?q=${user}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
-    this.setState({ loading: false, users: response.data.items })
-    if (this.state.users.length === 0)
-      this.alertUser('No Result Found, matching the input')
-  }
-
-  alertUser = (msg) => {
-    this.setState({ alert: { msg } })
+    setUsers(response.data.items)
     
-    setTimeout(() => this.setState({ alert: null }), 3000)
+    if (users.length === 0)
+      alertUser('No Result Found, matching the input')
   }
 
-  getUser = async (username) => {
-    this.setState({ loading: true})
+  const alertUser = (msg) => {
+    setAlert(msg)
+    setTimeout(() => setAlert(null), 3000)
+  }
+
+  const getUser = async (username) => {
     const response = await axios.get(`https://api.github.com/users/${username}`)
-    this.setState({ user: response.data })
+    setUser(response.data)
     return response.data
   }
 
-  getRepos = async (username) => {
-    this.setState({ loading: true})
+  const getRepos = async (username) => {
     const response = await axios.get(`https://api.github.com/users/${username}/repos?sort=created&per_page=5`)
-    this.setState({ repos: response.data })
+    setRepos(response.data)
     return response.data
   }
 
-  render() {
-    return (
-      <Router>
-        <div className = "App">
-          <Navbar title="Coder Finder" icon="fab fa-github" />
-          <div className="container">
-            <Alert alert={this.state.alert} />
-            <Switch>
-              <Route exact path="/">
-                <Fragment>
-                  <Search searchUsers={this.searchUsers} alertUser={this.alertUser} />
-                  <Users users={this.state.users} />
-                </Fragment>
-              </Route>
-              <Route exact path='/about'>
-                <About/>
-              </Route>
-              <Route exact path='/user/:login' render={
-                props => <User {...props} getRepos={this.getRepos} getUser={this.getUser}/>
-              }>
-              </Route>
-            </Switch>
-          </div>
+  return (
+    <Router>
+      <div className = "App">
+        <Navbar title="Coder Finder" icon="fab fa-github" />
+        <div className="container">
+          <Alert alert={alert} />
+          <Switch>
+            <Route exact path="/">
+              <Fragment>
+                <Search searchUsers={searchUsers} alertUser={alertUser} />
+                <Users users={users} />
+              </Fragment>
+            </Route>
+            <Route exact path='/about'>
+              <About/>
+            </Route>
+            <Route exact path='/user/:login' render={
+              props => <User {...props} user={user} repos={repos} getRepos={getRepos} getUser={getUser}/>
+            }>
+            </Route>
+          </Switch>
         </div>
-      </Router>
-    )
-  }
+      </div>
+    </Router>
+  )
 }
 
 export default App
