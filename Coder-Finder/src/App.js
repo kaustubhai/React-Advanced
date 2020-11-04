@@ -12,10 +12,10 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 const App = () => {
 
-  const [users, setUsers] = useState([])  
+  const [users, setUsers] = useState([1])  
   const [user, setUser] = useState({})  
   const [repos, setRepos] = useState([])
-  const [alert, setAlert] = useState(null)
+  const [alert, setAlert] = useState('')
 
   useEffect( async () => {
     const response = await axios.get(`https://api.github.com/users?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
@@ -25,26 +25,22 @@ const App = () => {
   const searchUsers = async (user) => {
     const response = await axios.get(`https://api.github.com/search/users?q=${user}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
     setUsers(response.data.items)
-    
-    if (users.length === 0)
-      alertUser('No Result Found, matching the input')
   }
 
   const alertUser = (msg) => {
     setAlert(msg)
-    setTimeout(() => setAlert(null), 3000)
+
+    setTimeout(() => {setAlert('')}, 3000)
   }
 
   const getUser = async (username) => {
     const response = await axios.get(`https://api.github.com/users/${username}`)
     setUser(response.data)
-    return response.data
   }
 
   const getRepos = async (username) => {
     const response = await axios.get(`https://api.github.com/users/${username}/repos?sort=created&per_page=5`)
     setRepos(response.data)
-    return response.data
   }
 
   return (
@@ -57,7 +53,7 @@ const App = () => {
             <Route exact path="/">
               <Fragment>
                 <Search searchUsers={searchUsers} alertUser={alertUser} />
-                <Users users={users} />
+                <Users alertUser={alertUser} users={users} />
               </Fragment>
             </Route>
             <Route exact path='/about'>

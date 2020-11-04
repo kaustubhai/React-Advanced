@@ -11,7 +11,7 @@ const Search = ({searchUsers, alertUser}) => {
                 if(text.trim() !== '')
                     searchUsers(text)
                 else
-                    console.log(text)
+                    alertUser('Please enter something to search')
                 }}>
                 <input type="text" name="text" onChange={(e) => setText(e.target.value)} value={text} placeholder="Search Coders" />
                 <input type="submit" value="search" className="btn btn-dark btn-block"/>

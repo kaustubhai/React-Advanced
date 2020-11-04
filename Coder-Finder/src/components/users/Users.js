@@ -1,16 +1,19 @@
 import React from 'react'
 import UserItem from './UserItem'
 
-const users = ({ users, loading }) => {
+const users = ({ users, alertUser }) => {
     
     if (!users){
         return (<h2>Loading...</h2>)
     }
 
+    if (!users.map)
+        alertUser('No result found matching the searched criteria')
+
     return (
         <div style={userStyle}>
             {   
-                users.map((user) => 
+                users.map && users.map((user) => 
                     <UserItem user={user} key={user.id} />
                 )
             }
