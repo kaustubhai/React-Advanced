@@ -1,19 +1,19 @@
-import React, { Component, Fragment , useEffect } from 'react'
+import React, { Fragment , useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import Repos from '../users/Repos';
 
 const User = ({getUser, getRepos, user, repos, match}) => {
 
-    useEffect( async () => {
-        await getUser(match.params.login)
-        await getRepos(match.params.login)
+    useEffect( () => {
+        getUser(match.params.login)
+        getRepos(match.params.login)
         // eslint-disable-next-line
     }, [])
 
-    if (user.login != match.params.login)
+    if (user.login !== match.params.login)
         return (<h2> Loading... </h2>)
 
-    const { login, avatar_url, type, bio, html_url, hireable, followers, following, public_repos, public_gists} = user
+    const { login, avatar_url, bio, html_url, hireable, followers, following, public_repos, public_gists} = user
     
     return (
         <Fragment>

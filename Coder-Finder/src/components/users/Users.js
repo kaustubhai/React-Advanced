@@ -1,19 +1,22 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import UserItem from './UserItem'
+import GithubContext from '../../context/GithubContext'
 
-const users = ({ users, alertUser }) => {
+const Users = ({ users, alertUser }) => {
+
+    const githubContext = useContext(GithubContext)
     
-    if (!users){
+    if (!githubContext.users){
         return (<h2>Loading...</h2>)
     }
 
-    if (!users.map)
+    if (!githubContext.users.map)
         alertUser('No result found matching the searched criteria')
 
     return (
         <div style={userStyle}>
             {   
-                users.map && users.map((user) => 
+                githubContext.users.map && githubContext.users.map((user) => 
                     <UserItem user={user} key={user.id} />
                 )
             }
@@ -21,7 +24,7 @@ const users = ({ users, alertUser }) => {
     )
 }
 
-export default users
+export default Users
 
 const userStyle = {
     display: 'grid',
