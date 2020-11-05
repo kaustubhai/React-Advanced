@@ -1,19 +1,22 @@
-import React, { Fragment , useEffect } from 'react'
+import React, { Fragment , useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom';
 import Repos from '../users/Repos';
+import GithubContext from '../../context/github/GithubContext'
 
-const User = ({getUser, getRepos, user, repos, match}) => {
+const User = ({match}) => {
+
+    const githubContext = useContext(GithubContext);
 
     useEffect( () => {
-        getUser(match.params.login)
-        getRepos(match.params.login)
+        githubContext.getUser(match.params.login)
+        githubContext.getRepos(match.params.login)
         // eslint-disable-next-line
     }, [])
 
-    if (user.login !== match.params.login)
+    if (githubContext.user.login !== match.params.login)
         return (<h2> Loading... </h2>)
 
-    const { login, avatar_url, bio, html_url, hireable, followers, following, public_repos, public_gists} = user
+    const { login, avatar_url, bio, html_url, hireable, followers, following, public_repos, public_gists} = githubContext.user
     
     return (
         <Fragment>
@@ -40,7 +43,7 @@ const User = ({getUser, getRepos, user, repos, match}) => {
                 </div>
             </div>
             <div className="card text-center">
-                <Repos repos={repos}/>
+                <Repos/>
                 <div className="badge badge-dark">Followers {followers} </div>
                 <div className="badge badge-light">Following {following} </div>
                 <div className="badge badge-danger">Repos {public_repos} </div>

@@ -1,9 +1,11 @@
 import React, { useState, useContext } from 'react'
-import GithubContext from '../../context/GithubContext'
+import GithubContext from '../../context/github/GithubContext'
+import AlertContext from '../../context/alert/alertContext'
 
-const Search = ({ alertUser }) => {
+const Search = () => {
     
     const githubContext = useContext(GithubContext)
+    const alertContext = useContext(AlertContext)
 
     const [text, setText] = useState('')
 
@@ -12,7 +14,7 @@ const Search = ({ alertUser }) => {
             <form className="form" onSubmit={(e) => {
                 e.preventDefault();
                 if (text === '') {
-                alertUser('Please Enter something to search')
+                alertContext.setAlert('Please Enter something to search')
                 } else {
                 githubContext.searchUsers(text);
                 setText('');

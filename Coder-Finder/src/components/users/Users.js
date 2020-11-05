@@ -1,17 +1,19 @@
 import React, { useContext } from 'react'
 import UserItem from './UserItem'
-import GithubContext from '../../context/GithubContext'
+import GithubContext from '../../context/github/GithubContext'
+import AlertContext from '../../context/alert/alertContext'
 
-const Users = ({ users, alertUser }) => {
+const Users = () => {
 
     const githubContext = useContext(GithubContext)
+    const alertContext = useContext(AlertContext)
     
     if (!githubContext.users){
         return (<h2>Loading...</h2>)
     }
 
     if (!githubContext.users.map)
-        alertUser('No result found matching the searched criteria')
+        alertContext.setAlert('No result found matching the searched criteria')
 
     return (
         <div style={userStyle}>

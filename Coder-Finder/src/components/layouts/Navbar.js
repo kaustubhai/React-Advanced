@@ -20,4 +20,9 @@ const Navbar = ({icon, title}) => {
     )
 }
 
+Navbar.defaultProps = {
+    icon: 'fab fa-github',
+    title: 'Coder Finder'
+}
+
 export default Navbar
