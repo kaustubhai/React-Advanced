@@ -5,6 +5,18 @@ import GithubContext from './GithubContext'
  // eslint-disable-next-line
 import { SEARCH_USERS, SET_REPOS, SET_ALERT, SET_USER } from '../types'
 
+let githubClientId;
+let githubClientSecretId;
+
+if (process.env.NODE_ENV !== ' production ') {
+    githubClientId = process.env.REACT_APP_GITHUB_CLIENT_ID
+    githubClientSecretId = process.env.REACT_APP_GITHUB_CLIENT_SECRET
+}
+else {
+    githubClientId = process.env.GITHUB_CLIENT_ID
+    githubClientSecretId = process.env.GITHUB_CLIENT_SECRET
+}
+
 const GithubState = (props) => {
 
     const initialState = {
@@ -17,7 +29,7 @@ const GithubState = (props) => {
     const [state, dispatch] = useReducer(GithubReducer, initialState)
 
     const searchUsers = async (user) => {
-        const response = await axios.get(`https://api.github.com/search/users?q=${user}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
+        const response = await axios.get(`https://api.github.com/search/users?q=${user}&client_id=${githubClientId}&client_secret=${githubClientSecretId}`)
         dispatch({ type: SEARCH_USERS, payload: response.data.items })
     }
 
