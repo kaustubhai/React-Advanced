@@ -1,12 +1,59 @@
 const express = require('express')
-
 const Router = express.Router();
+const bcrypt = require('bcryptjs')
+const config = require('config');
+const jwt = require('jsonwebtoken')
+const { body, validationResult } = require('express-validator');
+
+const User = require('../models/User')
 
 // @route   POST api/users
 // @desc    Register a user
 // @accesas Public
-Router.post('/', (req, res) => {
-    res.send('Hello')
+Router.post('/', [body('name', "Name is Required").not().isEmpty(),
+    body('email', "Please enter a valid email").isEmail(),
+    body('password', "Enter a password of more than 5 characters").isLength({ min: 5 })],
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json(errors)
+        }
+
+        const { name, email, password } = req.body;
+        
+        try {
+            
+            let user = await User.findOne({ email })
+            if (user)
+                return res.status(400).json({ msg: 'User already exist' })
+            
+            user = new User({
+                name, email, password
+            }) 
+            
+            user.password = await bcrypt.hash(user.password, 8);
+            await user.save()
+            
+            const payload = {
+                user: {
+                    id: user.id
+                }
+            }
+
+            jwt.sign(payload, config.get('jwtSecret'), {
+                expiresIn: 3600
+            }, (err, token) => {
+                    if (err)
+                        throw err
+                    
+                    res.json({token})
+            })
+
+        }
+        catch (e) {
+            console.log(e)
+            res.status(500).json({ msg: "Internal Server Error"})
+        }
 })
 
 module.exports= Router

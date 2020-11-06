@@ -1,6 +1,11 @@
 const express = require('express')
+const connectDB = require('./config/db')
 
 const server = express()
+
+connectDB()
+
+server.use(express.json({ extended: false }))
 
 server.get('/', (req, res) => res.json({ "hello": "Server is now live"}))
 
