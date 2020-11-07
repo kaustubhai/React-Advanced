@@ -2,11 +2,11 @@
 
 /* Global Styles */
 :root {
-  --primary-color: #24292e;
-  --dark-color: #2ea44f;
-  --light-color: #f4f4f4;
-  --danger-color: #dc3545;
-  --success-color: #28a745;
+  --primary-color: #102542;
+  --dark-color: #62929E;
+  --light-color: #f3f3f3;
+  --danger-color: #F87060;
+  --success-color: #A2D729;
 }
 
 * {
@@ -333,7 +333,12 @@ img {
 
 /* Forms */
 input {
-  margin: 1.2rem 0;
+  margin: 1rem 0;
+}
+
+input[type="text"], input[type="email"], input[type="password"]
+{
+    font-size:1.2rem !important;
 }
 
 .form-text {
