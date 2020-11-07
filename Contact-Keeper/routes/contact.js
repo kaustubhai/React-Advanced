@@ -49,15 +49,58 @@ Router.post('/', [auth,
 // @route   PUT api/contacts:id
 // @desc    Update Contacts of user
 // @accesas Private
-Router.put('/:id', (req, res) => {
-    res.send('Put Contacts')
+Router.put('/:id', auth, async (req, res) => {
+    try {
+        const id = req.params.id
+        let contact = await Contacts.findById(id)
+        
+        if (!contact)
+            return res.status(400).send('No user Found')
+        
+        if (contact.user.toString() !== req.user.id)
+            return res.status(400).json({ msg: "You are not authorised to perform this task"})
+        
+        var updatedContact = req.body;
+        
+        const newContact = {
+            name: updatedContact.name || contact.name, email: updatedContact.email || contact.email, phone: updatedContact.phone || contact.phone, type: updatedContact.type || contact.type, user: req.user.id
+        }
+
+        const updated = await Contacts.findByIdAndUpdate(
+            req.params.id,
+            {$set: newContact},
+            {new: true},)
+        res.send(updated)
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ msg: 'Internal Server Error'})
+    }
 })
 
 // @route   DELETE api/contacts
 // @desc    Delete Contacts of user
 // @accesas Private
-Router.delete('/:id', (req, res) => {
-    res.send('Del Contacts')
+Router.delete('/:id', auth, async (req, res) => {
+    try {
+        const id = req.params.id
+        const contact = await Contacts.findById(id)
+
+        if (!contact)
+            return res.status(400).send('No Contact Found')
+        
+        if (contact.user.toString() !== req.user.id) {
+            console.log(req.user.id, contact.user)
+            return res.status(400).json({ msg: "You are not authorised to perform this task" })
+        }
+            
+        
+        const deletedUser = await Contacts.findByIdAndDelete(id)
+        res.send(deletedUser)
+    } catch (error) {
+        console.log(error)
+        res.status(500).send('Internal Server Error')
+    }
 })
 
 module.exports= Router

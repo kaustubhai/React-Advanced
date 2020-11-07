@@ -13,6 +13,6 @@ server.use('/api/users', require('./routes/user'))
 server.use('/api/auth', require('./routes/auth'))
 server.use('/api/contacts', require('./routes/contact'))
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 5000
 
 server.listen(PORT, () => console.log('Server is live on', PORT))
