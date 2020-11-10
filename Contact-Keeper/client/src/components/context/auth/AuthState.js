@@ -1,7 +1,6 @@
 import React, { useReducer } from 'react'
 import AuthContext from './AuthContext'
 import AuthReducer from './AuthReducer'
-import setAuhToken from '../../utils/setAuthToken'
 import axios from 'axios'
 import {
     REGISTER_SUCCESS,
@@ -85,6 +84,11 @@ const loadUser = async () => {
         }
     }
     // Logout User
+    const logout = () => {
+        dispatch({ 
+            type: LOGOUT
+        })
+    }
     // Clear Errors
 
     return (
@@ -97,7 +101,8 @@ const loadUser = async () => {
                 errors: state.errors,
                 registerUser,
                 loginUser,
-                loadUser
+                loadUser,
+                logout
         }}>
             {props.children}
         </AuthContext.Provider>

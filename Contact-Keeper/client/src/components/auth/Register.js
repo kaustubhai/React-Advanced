@@ -3,7 +3,6 @@ import AlertContext from '../context/alert/AlertContext'
 import Alerts from '../layouts/Alerts'
 import AuthContext from '../context/auth/AuthContext'
 
-
 const Register = props => {
 
     const alertContext = useContext(AlertContext)
@@ -17,7 +16,7 @@ const Register = props => {
         if (isAuthenticated)
             props.history.push('/')
 
-        if (errors !== null)
+        if (errors !== null && errors !== undefined)
             setAlert(errors, 'danger')
         
         //eslint-disable-next-line

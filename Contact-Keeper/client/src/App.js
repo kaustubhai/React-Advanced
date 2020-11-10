@@ -10,6 +10,7 @@ import ContactState from './components/context/Contacts/ContactState';
 import AuthState from './components/context/auth/AuthState';
 import AlertState from './components/context/alert/AlertState';
 import setAuthToken from './components/utils/setAuthToken'
+import PrivateRoute from './components/routing/PrivateRoute' 
 
 if (localStorage.getItem('token'))
   setAuthToken(localStorage.getItem('token'))
@@ -24,7 +25,7 @@ const App = () => {
               <Navbar />
               <div className="container">
                 <Switch>
-                  <Route exact path='/' component={Home} />
+                  <PrivateRoute exact path='/' component={Home} />
                   <Route exact path='/about' component={About} />
                   <Route exact path='/register' component={Register} />
                   <Route exact path='/login' component={Login} />

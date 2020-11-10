@@ -9,7 +9,21 @@ const Login = props => {
     const alertContext = useContext(AlertContext)
 
     const { setAlert } = alertContext
-    const { loginUser, errors, isAuthenticated } = authContext
+    const { loginUser, loadUser, errors, isAuthenticated } = authContext
+
+    useEffect(() => {
+
+        loadUser()
+
+        if (isAuthenticated){
+            props.history.push('/')
+        }
+
+        if (errors !== null && errors !== undefined)
+            setAlert(errors, 'danger')
+        
+        //eslint-disable-next-line
+    }, [errors, isAuthenticated])
 
     const [user, setUser] = useState({
         email: '',
@@ -17,20 +31,6 @@ const Login = props => {
     })
 
     const { email, password } = user
-
-    useEffect(() => {
-
-        if (isAuthenticated){
-            props.history.push({
-                pathname: '/'
-            })
-        }
-
-        if (errors !== null)
-            setAlert(errors, 'danger')
-        
-        //eslint-disable-next-line
-    }, [errors, isAuthenticated])
 
     const onChange = (e) => {
         setUser({ ...user, [e.target.name]: e.target.value})
