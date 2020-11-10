@@ -34,7 +34,6 @@ const loadUser = async () => {
         if (localStorage.token){
             setAuthToken(localStorage.token)
             const user = await axios.get('/api/auth')
-            console.log(user)
             dispatch({ type: USER_LOADED, payload: user })
         }
     } catch (error) {
