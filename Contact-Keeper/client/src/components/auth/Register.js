@@ -1,13 +1,23 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import AlertContext from '../context/alert/AlertContext'
 import Alerts from '../layouts/Alerts'
+import AuthContext from '../context/auth/AuthContext'
 
 
 const Register = () => {
 
     const alertContext = useContext(AlertContext)
+    const authContext = useContext(AuthContext)
 
     const { setAlert } = alertContext
+    const { registerUser, errors } = authContext
+
+    useEffect(() => {
+        if (errors !== null)
+            setAlert(errors, 'danger')
+        
+        //eslint-disable-next-line
+    }, [errors])
 
     const [user, setUser] = useState({
         name: '',
@@ -30,8 +40,11 @@ const Register = () => {
             setAlert('Your Passwords dont match', 'danger')
         else if (password.length < 5)
             setAlert('Password needs to be of minimum 5 characters', 'danger')
-        else
-            console.log(user)
+        else{
+            registerUser({
+                name, email, password
+            })
+        }
     }
 
     return (
