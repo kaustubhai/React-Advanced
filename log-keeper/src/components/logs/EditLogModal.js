@@ -23,8 +23,8 @@ const EditLogModal = () => {
                 <h4 style={{marginBottom: '50px'}}>Enter System Log</h4>
                 <div className="row">
                     <div className="input-field">
-                        <input name="message" value={message} onChange={(e) => setMessage(e.target.value)} id="message" type="text" className="validate" />
-                        <label htmlFor="message">Log Message</label>
+                        <input name="editMessage" value={message} onChange={(e) => setMessage(e.target.value)} id="editMessage" type="text" className="validate" />
+                        <label htmlFor="editMessage">Log Message</label>
                         
                     </div>
                 </div>
