@@ -1,32 +1,11 @@
 {
   "logs": [
     {
-      "id": 1,
-      "message": "Changed hard-disk on workstation 007",
-      "attention": false,
-      "date": "03-02-2019",
-      "tech": "Sam Smith"
-    },
-    {
-      "id": 2,
-      "message": "Server is down at port 3000",
+      "message": "serious",
       "attention": true,
-      "date": "05-02-2019",
-      "tech": "Ellen DeGenres"
-    },
-    {
-      "id": 3,
-      "message": "Corporate wants to find difference in between 2 images",
-      "attention": true,
-      "date": "05-02-2019",
-      "tech": "Pam Beesley"
-    },
-    {
-      "id": 4,
-      "message": "Server is now up at port 3000",
-      "attention": false,
-      "date": "07-02-2019",
-      "tech": "Pam Beesley"
+      "tech": "Ellen DeGenres",
+      "date": "2020-11-20T09:30:30.830Z",
+      "id": 1
     }
   ],
   "techs": [

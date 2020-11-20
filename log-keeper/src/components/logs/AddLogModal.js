@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import M from 'materialize-css/dist/js/materialize.min.js'
+import { connect } from 'react-redux'
+import { addLogs } from '../../actions/logActions'
 
-const AddLogModal = () => {
+const AddLogModal = ({addLogs}) => {
 
     const [message, setMessage] = useState('');
     const [attention, setAttention] = useState(false);
@@ -10,7 +12,17 @@ const AddLogModal = () => {
     const onSubmit = () => {
         if (message.trim() === '' || tech.trim() === '')
             M.toast({ html: 'Please enter a message and a technician' })
-        else{
+        else {
+            
+            const newLog = {
+                message,
+                attention,
+                tech,
+                date: new Date()
+            }
+
+            addLogs(newLog)
+
             setMessage('')
             setTech('')
             setAttention(false)
@@ -60,4 +72,4 @@ const modalStyle = {
     padding: '5%'
 }
 
-export default AddLogModal
+export default connect(null, { addLogs })(AddLogModal)
