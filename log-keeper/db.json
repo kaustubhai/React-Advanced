@@ -2,10 +2,24 @@
   "logs": [
     {
       "message": "serious",
-      "attention": true,
+      "attention": false,
       "tech": "Ellen DeGenres",
-      "date": "2020-11-20T09:30:30.830Z",
+      "date": "2020-11-20T09:47:47.280Z",
       "id": 1
+    },
+    {
+      "message": "Just Cause 4",
+      "attention": true,
+      "tech": "Pam Beesley",
+      "date": "2020-11-20T09:47:30.959Z",
+      "id": 2
+    },
+    {
+      "message": "Hello",
+      "attention": false,
+      "tech": "John Doe",
+      "date": "2020-11-20T09:47:40.896Z",
+      "id": 3
     }
   ],
   "techs": [
